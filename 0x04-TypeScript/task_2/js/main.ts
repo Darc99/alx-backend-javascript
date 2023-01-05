@@ -1,46 +1,47 @@
-interface Student {
-    firstName: string,
-    lastName: string,
-    age: Number,
-    location: string
+interface DirectorInterface {
+  workFromHome(): string;
+  getCoffeeBreak(): string;
+  workDirectorTasks(): string;
 }
   
-const student1: Student = {
-    firstName: "Leonard",
-    lastName: "Obi",
-    age: 24,
-    location: "Nigeria"
+interface TeacherInterface {
+  workFromHome(): string;
+  getCoffeeBreak(): string;
+  workTeacherTasks(): string;
 }
   
-const student2: Student = {
-    firstName: "Joe",
-    lastName: "Winston",
-    age: 27,
-    location: "Ghana"
+export class Director implements DirectorInterface {
+  workFromHome = () => 'Working from home';
+  getCoffeeBreak = () => 'Getting a coffee break';
+  workDirectorTasks = () => 'Getting to director tasks';
 }
-  
-const studentsList: Array<Student> = [ student1, student2 ];
 
-const body: HTMLBodyElement = document.getElementsByTagName("body")[0];
-const table: HTMLTableElement = document.createElement("table");
-const thead: HTMLTableSectionElement = document.createElement("thead");
-const tbody: HTMLTableSectionElement = document.createElement("tbody");
-const rowHead: HTMLTableRowElement = thead.insertRow(0);
-const cell1Head: HTMLTableCellElement = rowHead.insertCell(0);
-const cell2Head: HTMLTableCellElement = rowHead.insertCell(1);
+export class Teacher implements TeacherInterface {
+  workFromHome = () => 'Cannot work from home';
+  getCoffeeBreak = () => 'Cannot have a break';
+  workTeacherTasks = () => 'Getting to work';
+}
 
-cell1Head.innerHTML = "firstName";
-cell2Head.innerHTML = "location";
-table.append(thead);
+export const createEmployee = (salary: number | string): Teacher | Director => Number(salary) < 500 ? new Teacher() : new Director()
 
-studentsList.forEach((student) => {
-    const row: HTMLTableRowElement = tbody.insertRow(0);
-    const cell1: HTMLTableCellElement = row.insertCell(0);
-    const cell2: HTMLTableCellElement = row.insertCell(1);
-  
-    cell1.innerHTML = student.firstName;
-    cell2.innerHTML = student.location;
-});
-  
-table.append(tbody);
-body.append(table);
+export function isDirector(employee: TeacherInterface | DirectorInterface): employee is Director {
+  return (employee as Director).workDirectorTasks !== undefined;
+}
+
+export function executeWork(employee: DirectorInterface | TeacherInterface): string {
+  let res = undefined;
+  (isDirector(employee)) ? res = employee.workDirectorTasks() : res = employee.workTeacherTasks();
+  return res;
+}
+type Subjects = "Math" | "History";
+
+export function teachClass(todayClass: Subjects): string {
+  if (todayClass === "Math") {
+    return "Teaching Math";
+  } else if (todayClass === "History") {
+    return "Teaching History";
+  }
+}
+
+console.log(teachClass("Math"));
+console.log(teachClass("History"));
