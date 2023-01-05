@@ -1,46 +1,46 @@
-interface Student {
-    firstName: string,
-    lastName: string,
-    age: Number,
-    location: string
-}
-  
-const student1: Student = {
-    firstName: "Leonard",
-    lastName: "Obi",
-    age: 24,
-    location: "Nigeria"
-}
-  
-const student2: Student = {
-    firstName: "Joe",
-    lastName: "Winston",
-    age: 27,
-    location: "Ghana"
-}
-  
-const studentsList: Array<Student> = [ student1, student2 ];
+interface Teacher {
+  readonly firstName: string,
+  readonly lastName: string,
+  fullTimeEmployee: boolean,
+  yearsOfExperience?: Number,
+  location: string,
+  [propName: string]: any,
+  }
 
-const body: HTMLBodyElement = document.getElementsByTagName("body")[0];
-const table: HTMLTableElement = document.createElement("table");
-const thead: HTMLTableSectionElement = document.createElement("thead");
-const tbody: HTMLTableSectionElement = document.createElement("tbody");
-const rowHead: HTMLTableRowElement = thead.insertRow(0);
-const cell1Head: HTMLTableCellElement = rowHead.insertCell(0);
-const cell2Head: HTMLTableCellElement = rowHead.insertCell(1);
+interface Directors extends Teacher {
+  numberOfReports: Number,
+}
 
-cell1Head.innerHTML = "firstName";
-cell2Head.innerHTML = "location";
-table.append(thead);
+interface printTeacherFunction {
+  (firstName: string, lastName: string): string;  
+}
 
-studentsList.forEach((student) => {
-    const row: HTMLTableRowElement = tbody.insertRow(0);
-    const cell1: HTMLTableCellElement = row.insertCell(0);
-    const cell2: HTMLTableCellElement = row.insertCell(1);
-  
-    cell1.innerHTML = student.firstName;
-    cell2.innerHTML = student.location;
-});
-  
-table.append(tbody);
-body.append(table);
+const printTeacher: printTeacherFunction = (firstName: string, lastName: string): string => `${firstName.charAt(0)}.${lastName}`;
+interface classInterface {
+  workOnHomework(): string;
+  displayName(): string;
+}
+
+class StudentClass implements classInterface{
+  firstName: string;
+  lastName: string;
+
+  constructor(firstName: string, lastName: string) {
+    this.firstName;
+    this.lastName;
+  }
+
+  workOnHomework():string{
+    return "Currently working";
+  }
+  displayName():string{
+    return this.firstName;
+  }
+}
+interface StudentConstructor {
+  (firstName: string, lastName: string): classInterface;
+}
+
+const student = new StudentClass("Joe", "Andy");
+console.log(student.displayName())
+console.log(student.workOnHomework())
